@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 import React from "react";
 import { renderToString } from "react-dom/server";
-import Home from "./containers/Home";
+import Home from "../containers/Home";
 
 app.use(express.static("public"));
 
