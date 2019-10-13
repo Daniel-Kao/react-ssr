@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import Header from "../../components/Header";
 import { actions } from "./store";
+import styles from "./style.css";
+import withStylesHoc from "../../components/withStylesHoc";
 
 const Home = props => {
   useEffect(() => {
@@ -12,7 +13,7 @@ const Home = props => {
     <div>
       <h1>hello world</h1>
       <button onClick={() => props.getList()}>click</button>
-      <div>{renderList(props.list)}</div>
+      <div className={styles.x}>{renderList(props.list)}</div>
     </div>
   );
 };
@@ -33,11 +34,13 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
-Home.loadData = store => {
+const ExportHome = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withStylesHoc(Home, styles));
+
+ExportHome.loadData = store => {
   return store.dispatch(actions.getNewsList());
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default ExportHome;
