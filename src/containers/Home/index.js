@@ -10,7 +10,6 @@ const Home = props => {
 
   return (
     <div>
-      <Header />
       <h1>hello world</h1>
       <button onClick={() => props.getList()}>click</button>
       <div>{renderList(props.list)}</div>
