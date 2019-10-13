@@ -26,13 +26,28 @@ app.get("*", (req, res) => {
 
   matchedRoutes.forEach(item => {
     if (item.route.loadData) {
-      promises.push(item.route.loadData(store));
+      const promise = new Promise((resolve, reject) => {
+        item.route
+          .loadData(store)
+          .then(resolve)
+          .catch(resolve);
+      });
+      promises.push(promise);
     }
   });
 
   Promise.all(promises)
     .then(() => {
-      res.send(render(req, store, routes));
+      const context = {};
+      const html = render(req, store, routes, context);
+      if (context.NOT_FOUND) {
+        res.status(404);
+        res.send(html);
+      } else if (context.action === "REPLACE") {
+        res.redirect(301, context.url);
+      } else {
+        res.send(html);
+      }
     })
     .catch(err => console.log("server error"));
 });
